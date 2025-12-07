@@ -8,10 +8,24 @@ fun main() {
     }
 
     fun part2(input: List<String>): Long {
-        return 0L
+        val transposed = input.last().indices.map { col -> input.indices.map { row -> input[row][col] } }
+
+        var sum = 0L
+        val numbers = mutableListOf<Long>()
+        transposed.reversed().forEach { column ->
+            column.dropLast(1).joinToString("").trim().toLongOrNull()?.let { numbers += it }
+            if (column.last() == '+') {
+                sum += numbers.sum()
+                numbers.clear()
+            } else if (column.last() == '*') {
+                sum += numbers.fold(1L, Long::times)
+                numbers.clear()
+            }
+        }
+        return sum
     }
 
     val input = readInput("Day06")
-    part1(input).println()
-    //part2(input).println()
+    //part1(input).println()
+    part2(input).println()
 }
