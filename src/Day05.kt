@@ -12,7 +12,21 @@ fun main() {
     }
 
     fun part2(input: List<String>): Long {
-        return 0L
+        var position = 0L
+        var sum = 0L
+
+        input
+            .takeWhile { it.isNotEmpty() }
+            .map { it.split("-").let { it.first().toLong()..it.last().toLong() } }
+            .sortedBy { it.first }
+            .forEach { range ->
+                if (range.last >= position) {
+                    sum += range.last - maxOf(range.first, position) + 1
+                    position = range.last + 1
+                }
+            }
+
+        return sum
     }
 
     val input = readInput("Day05")
